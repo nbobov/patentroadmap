@@ -1,0 +1,132 @@
+* {
+    font-family: 'Manrope', sans-serif;
+}
+
+body {
+    padding: 15px;
+    margin: 0;
+    background-color: #EFF5F9;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    height: calc(100vh - 30px);
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    gap: 15px;
+}
+
+.left-panel {
+    background-image: url('../images/register.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    color: #373737;
+    text-align: center;
+}
+
+.right-panel {
+    padding: 0 25%;
+}
+
+.action-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    color: #373737;
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+form {
+    width: 100%;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 15px rgba(129, 148, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.input-block .tip {
+    margin-top: 0;
+}
+
+label {
+    color: #373737;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+input {
+    background-color: #F5F7FA;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    color: #9A9A9A;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid rgba(129, 148, 255, 0.8);
+}
+
+button {
+    margin-top: 15px;
+    width: 100%;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    color: rgba(129, 148, 255, 1);
+    font-size: 14px;
+    font-weight: 700;
+    background-color: rgba(129, 148, 255, 0.2);
+    cursor: pointer;
+}
+
+.register-link, .tip {
+    margin-top: 15px;
+    color: #9A9A9A;
+    font-size: 14px;
+}
+
+a, a:visited, a:hover, a:active {
+    color: rgba(129, 148, 255, 1);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.input-error {
+    border: 2px solid #813030;
+    transition: all 0.3s ease;
+}
+
+.error-message {
+    color: #813030;
+    font-size: 14px;
+}
+
+.left-panel img {
+    width: 100px;
+}

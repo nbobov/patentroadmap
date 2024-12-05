@@ -1,0 +1,184 @@
+@using roadmap_migrant.Models
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/fillForm.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap">
+    <title>ИС «Мигрант» | Анкета</title>
+</head>
+<body>
+<header>
+    <div class="name">
+        <img src="/images/coat.svg"/>
+        <div>Информационная система «Мигрант»</div>
+    </div>
+    <a class="register-link logout" href="@Url.Action("Logout", "Account")">Выйти</a>
+</header>
+<div class="container">
+    <div class="action-title">Заполните информацию о себе</div>
+    <div class="form">
+        <form asp-action="FillForm" method="post">
+            <div class="input-block">
+                <label>Дата въезда в РФ</label>
+                <input type="date" name="EntryDate"
+                       value="@(Model.EntryDate.Year != 1 ? Model.EntryDate.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"))"
+                       min="@DateTime.Now.AddYears(-100).ToString("yyyy-MM-dd")"
+                       max="@DateTime.Now.ToString("yyyy-MM-dd")"
+                       required/>
+            </div>
+            <div class="input-block">
+                <label>Гражданство</label>
+                <select id="citizenship-select" name="Citizenship" required>
+                    <option value="">Выберите страну</option>
+                    @if (ViewData["CountryNames"] is List<string> countryNames)
+                    {
+                        foreach (var countryName in countryNames)
+                        {
+                            <option value="@countryName" @(Model.Citizenship == countryName ? "selected" : "")>
+                                @countryName
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div id="specialist-block" class="input-block @(Model.HighQualitySpecialist == true ? "" : "hidden")">
+                <label>Являюсь высококвалифицированным специалистом или членом их семей, участником государственной программы переселения соотечественников и членов их семей</label>
+                <div class="radio-tile-group">
+                    <div class="input-container">
+                        <input id="specialist-yes" class="radio-button" type="radio" name="HighQualitySpecialist" value="true"
+                               @(Model.HighQualitySpecialist == true ? "checked" : "") @(Model.HighQualitySpecialist == true ? "required" : "")/>
+                        <div class="radio-tile">
+                            <label for="specialist-yes" class="radio-tile-label">Да</label>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <input id="specialist-no" class="radio-button" type="radio" name="HighQualitySpecialist" value="false"
+                               @(Model.HighQualitySpecialist == false ? "checked" : "")/>
+                        <div class="radio-tile">
+                            <label for="specialist-no" class="radio-tile-label">Нет</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="certificate-block" class="input-block @(Model.HasCertificate == true || (Model.HasCertificate == false && (Model.HasDiploma == true || Model.HasDiploma == false)) ? "" : "hidden")">
+                <label>Имею сертификат, подтверждающий, что я владею русским языком, а также знаком(-а) с историей и основами законодательства РФ</label>
+                <div class="radio-tile-group">
+                    <div class="input-container">
+                        <input id="certificate-yes" class="radio-button" type="radio" name="HasCertificate" value="true"
+                               @(Model.HasCertificate == true ? "checked" : "") @(Model.HasCertificate == true || (Model.HasCertificate == false && (Model.HasDiploma == true || Model.HasDiploma == false)) ? "required" : "")/>
+                        <div class="radio-tile">
+                            <label for="certificate-yes" class="radio-tile-label">Да</label>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <input id="certificate-no" class="radio-button" type="radio" name="HasCertificate" value="false"
+                               @(Model.HasCertificate == false ? "checked" : "")/>
+                        <div class="radio-tile">
+                            <label for="certificate-no" class="radio-tile-label">Нет</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="diploma-block" class="input-block @(Model.HasDiploma == true || 
+                    (Model.HasDiploma == false && (Model.HasCertificate == true || Model.HasCertificate == false)) ? "" : "hidden")">
+                <label>
+                    Имею один из документов:
+                    <ul>
+                        <li>аттестат об образовании, полученный до 1991 года</li>
+                        <li>диплом об образовании, полученный на территории РФ.</li>
+                    </ul>
+                </label>
+                <div class="radio-tile-group">
+                    <div class="input-container">
+                        <input id="diploma-yes" class="radio-button" type="radio" name="HasDiploma" value="true"
+                               @(Model.HasDiploma == true ? "checked" : "") @(Model.HasDiploma == true || 
+                                    (Model.HasDiploma == false && (Model.HasCertificate == true || Model.HasCertificate == false)) ? "required" : "")/>
+                        <div class="radio-tile">
+                            <label for="diploma-yes" class="radio-tile-label">Да</label>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <input id="diploma-no" class="radio-button" type="radio" name="HasDiploma" value="false"
+                               @(Model.HasDiploma == false ? "checked" : "")/>
+                        <div class="radio-tile">
+                            <label for="diploma-no" class="radio-tile-label">Нет</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="certificate-date-block" class="input-block @(Model.HasCertificate == true || Model.HasDiploma == true ? "" : "hidden")">
+                <label>Дата выдачи сертификата, аттестата или диплома</label>
+                <input id="certificate-date" type="date" name="CertificateDate"
+                       value="@Model.CertificateDate?.ToString("yyyy-MM-dd")"
+                       min="@DateTime.Now.AddYears(-100).ToString("yyyy-MM-dd")"
+                       max="@DateTime.Now.ToString("yyyy-MM-dd")" @(Model.HasCertificate == true || Model.HasDiploma == true ? "required" : "")/>
+            </div>
+            <div id="bank-extract-block" class="input-block @(Model.HasBankExtract == true || Model.HasBankExtract == false ? "" : "hidden")">
+                <label>Имею выписку из банка, подтверждающую факт оплаты НДФЛ за первый месяц действия патента</label>
+                <div class="radio-tile-group">
+                    <div class="input-container">
+                        <input id="bank-yes" class="radio-button" type="radio" name="HasBankExtract" value="true"
+                               @(Model.HasBankExtract == true ? "checked" : "") @(Model.HasBankExtract == true || Model.HasBankExtract == false ? "required" : "")/>
+                        <div class="radio-tile">
+                            <label for="bank-yes" class="radio-tile-label">Да</label>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <input id="bank-no" class="radio-button" type="radio" name="HasBankExtract" value="false"
+                               @(Model.HasBankExtract == false ? "checked" : "")/>
+                        <div class="radio-tile">
+                            <label for="bank-no" class="radio-tile-label">Нет</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="photos-block" class="input-block @(Model.HasPhotos == true || Model.HasPhotos == false ? "" : "hidden")">
+                <label>Имею две фотографии формата 3x4</label>
+                <div class="radio-tile-group">
+                    <div class="input-container">
+                        <input id="photos-yes" class="radio-button" type="radio" name="HasPhotos" value="true"
+                               @(Model.HasPhotos == true ? "checked" : "") @(Model.HasPhotos == true || Model.HasPhotos == false ? "required" : "")/>
+                        <div class="radio-tile">
+                            <label for="photos-yes" class="radio-tile-label">Да</label>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <input id="photos-no" class="radio-button" type="radio" name="HasPhotos" value="false"
+                               @(Model.HasPhotos == false ? "checked" : "")/>
+                        <div class="radio-tile">
+                            <label for="photos-no" class="radio-tile-label">Нет</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tin-block" class="input-block @(Model.HasTIN == true || Model.HasTIN == false ? "" : "hidden")">
+                <label>Имею ИНН</label>
+                <div class="radio-tile-group">
+                    <div class="input-container">
+                        <input id="tin-yes" class="radio-button" type="radio" name="HasTIN" value="true"
+                               @(Model.HasTIN == true ? "checked" : "") @(Model.HasTIN == true || Model.HasTIN == false ? "required" : "")/>
+                        <div class="radio-tile">
+                            <label for="tin-yes" class="radio-tile-label">Да</label>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <input id="tin-no" class="radio-button" type="radio" name="HasTIN" value="false"
+                               @(Model.HasTIN == false ? "checked" : "")/>
+                        <div class="radio-tile">
+                            <label for="tin-no" class="radio-tile-label">Нет</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+    <script src="/js/script.js"></script>
+</div>
+</body>
+</html>

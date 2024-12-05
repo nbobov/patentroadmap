@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/register.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" asp-append-version="true">
+    <title>ИС «Мигрант» | Регистрация</title>
+</head>
+<body>
+<div class="container">
+    <div class="panel left-panel">
+        <img src="/images/coat.svg"/>
+        <div>Информационная система<br>«Мигрант»</div>
+    </div>
+    <div class="panel right-panel">
+        <div class="action-title">Создайте аккаунт</div>
+        <form asp-action="Register" method="post">
+            <div class="input-block">
+                <label>Электронная почта</label>
+                <input type="email" name="email" placeholder="example@example.com"
+                       class="@(ViewData.ModelState.ContainsKey("EmailError") ? "input-error" : "")"
+                       value="@ViewData["Email"]" required/>
+                @if (ViewData.ModelState.ContainsKey("EmailError"))
+                {
+                    <div class="error-message">@ViewData.ModelState["EmailError"].Errors[0].ErrorMessage</div>
+                }
+            </div>
+            <div class="input-block">
+                <label>Пароль</label>
+                <input type="password" name="password" placeholder="Введите пароль"
+                       class="@(ViewData.ModelState.ContainsKey("PasswordError") ? "input-error" : "")"
+                       required/>
+                @if (ViewData.ModelState.ContainsKey("PasswordError"))
+                {
+                    <div class="error-message">@ViewData.ModelState["PasswordError"].Errors[0].ErrorMessage</div>
+                }
+            </div>
+            <div class="input-block">
+                <label>Повторите пароль</label>
+                <input type="password" name="confirmPassword" placeholder="Введите пароль ещё раз"
+                       class="@(ViewData.ModelState.ContainsKey("ConfirmPasswordError") ? "input-error" : "")"
+                       required/>
+                @if (ViewData.ModelState.ContainsKey("ConfirmPasswordError"))
+                {
+                    <div class="error-message">@ViewData.ModelState["ConfirmPasswordError"].Errors[0].ErrorMessage</div>
+                }
+            </div>
+            <button type="submit">Зарегистрироваться</button>
+            <div class="register-link">Уже есть аккаунт? <a href="@Url.Action("Login")">Войти</a></div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

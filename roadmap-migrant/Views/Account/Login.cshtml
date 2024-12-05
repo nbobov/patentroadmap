@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" asp-append-version="true">
+    <title>ИС «Мигрант» | Авторизация</title>
+</head>
+<body>
+<div class="container">
+    <div class="panel left-panel">
+        <img src="/images/coat.svg"/>
+        <div>Информационная система<br>«Мигрант»</div>
+    </div>
+    <div class="panel right-panel">
+        <div class="action-title">Войдите в свой аккаунт</div>
+        <form asp-action="Login" method="post">
+            <div class="input-block">
+                <label>Электронная почта</label>
+                <input type="email" name="email" placeholder="example@example.com"
+                       value="@ViewData["Email"]"
+                       class="@(ViewData.ModelState.ContainsKey("EmailError") ? "input-error" : "")"
+                       required/>
+                @if (ViewData.ModelState.ContainsKey("EmailError"))
+                {
+                    <div class="error-message">@ViewData.ModelState["EmailError"].Errors[0].ErrorMessage</div>
+                }
+            </div>
+            <div class="input-block">
+                <label>Пароль</label>
+                <input type="password" name="password" placeholder="Введите свой пароль"
+                       class="@(ViewData.ModelState.ContainsKey("PasswordError") ? "input-error" : "")"
+                       required/>
+                @if (ViewData.ModelState.ContainsKey("PasswordError"))
+                {
+                    <div class="error-message">@ViewData.ModelState["PasswordError"].Errors[0].ErrorMessage</div>
+                }
+            </div>
+            <button type="submit">Войти</button>
+            <div class="register-link">Нет аккаунта? <a href="@Url.Action("Register")">Зарегистрироваться</a></div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

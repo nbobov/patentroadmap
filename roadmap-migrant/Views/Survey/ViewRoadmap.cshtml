@@ -1,0 +1,70 @@
+@model roadmap_migrant.Models.RoadmapViewModel
+@{ int count = 1; }
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/viewRoadmap.css" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap">
+    <title>ИС «Мигрант» | Дорожная карта</title>
+</head>
+<body>
+<header>
+    <div class="name">
+        <img src="/images/coat.svg"/>
+        <div>Информационная система «Мигрант»</div>
+    </div>
+    <div class="name">
+        <a class="register-link change-data" href="@Url.Action("FillForm", "Survey")">Изменить данные</a>
+        <a class="register-link logout" href="@Url.Action("Logout", "Account")">Выйти</a>
+    </div>
+</header>
+<div class="container">
+    <div class="action-title">Ваша дорожная карта</div>
+    <div class="roadmap">
+        @foreach (var step in Model.RoadmapSteps)
+        {
+            <div class="roadmap-step">
+                
+                @if (step.StepName == "Патент не нужен" || step.StepName == "Разрешение на работу")
+                {
+                    <div class="point attention">
+                        <div>!</div>
+                    </div>
+                    <div class="roadmap-step-title">@step.StepName</div>
+                    <div></div>
+                }
+                else
+                {
+                    <div class="point">
+                        <div>@count</div>
+                    </div>
+                    <div class="roadmap-step-title">@step.StepName</div>
+                    <div class="line"></div>
+                }
+                <div class="roadmap-step-description">@step.Description</div>
+            </div>
+
+            count++;
+        }
+        @if (Model.RoadmapSteps[0].StepName != "Разрешение на работу" && Model.RoadmapSteps[0].StepName != "Патент не нужен")
+        {
+            Console.WriteLine("here");
+            Console.WriteLine(Model.RoadmapSteps[0].StepName);
+            <div class="roadmap-step">
+                <div class="point last-point">
+                    <div>✔</div>
+                </div>
+                <div class="roadmap-step-title">Получение патента</div>
+                <div></div>
+                <div class="roadmap-step-description">После получения уведомления о готовности заберите свой патент.</div>
+            </div>
+        }
+    </div>
+</div>
+</body>
+</html>
